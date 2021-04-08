@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio three js</title>
+</head>
+<body>
+    <div id="myStats"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/96/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stats.js/r16/Stats.js"></script>
+    <script
+src="https://unpkg.com/three@0.85.0/examples/js/controls/OrbitControls.js"></script>
+
+<script>
+    var camera, scene, renderer;
+    var stats;
+    var controls;
+    var geometry, material, mesh;
+    var cabezaGeometria, cabezaMaterial, cabezaMesh;
+    var hombrosGeometria, hombrosMaterial, hombrosMesh;
+    var brazoGeometria, brazoMaterial, legsMesh;
+    let mario = new THREE.Object3D();
+    
+    init();
+    animate();
+    function createStats() {
+        stats = new Stats();
+        stats.setMode(2); // 0: fps, 1: ms, 2memory
+        stats.domElement.style.position = "absolute";
+        stats.domElement.style.left = "100px";
+        stats.domElement.style.top = "10px";
+        document.getElementById("myStats").appendChild(stats.domElement);
+        return stats;
+    }
+    function init() {
+        camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 10);
+        camera.position.z = 4;
+        camera.position.y = 1;
+        scene = new THREE.Scene();
+        mario.add(build_legs());
+        scene.add(mario);
+        createStats();
+        renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+        document.body.appendChild(renderer.domElement);
+        let loader = new THREE.TextureLoader();
+        loader.load("./mario.jpg", function (texture) {
+            scene.background = texture;
+        })
+
+    }
+    function build_legs() {
+        let legs = new THREE.Object3D();
+        //gorra
+        cabezaGeometria = new THREE.BoxGeometry(0.8, 0.4, 0.15);
+        cabezaMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+        cabezaMesh = new THREE.Mesh(cabezaGeometria, cabezaMaterial);
+        legs.add(cabezaMesh);
+        cabezaMesh.position.y = 2.45;
+        //cabeza
+        cabezaGeometria = new THREE.BoxGeometry(0.6, 0.6, 0.35);
+        cabezaMaterial = new THREE.MeshBasicMaterial({ color: 0xffdbc4 });
+        cabezaMesh = new THREE.Mesh(cabezaGeometria, cabezaMaterial);
+        legs.add(cabezaMesh);
+        cabezaMesh.position.y = 2;
+        //gorra detalle
+        cabezaGeometria = new THREE.BoxGeometry(0.4, 0.1, 0.2);
+        cabezaMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+        cabezaMesh = new THREE.Mesh(cabezaGeometria, cabezaMaterial);
+        legs.add(cabezaMesh);
+        cabezaMesh.position.y = 2.46;
+        //m de mario
+        cabezaGeometria = new THREE.BoxGeometry(0.1, 0.03, 0.2);
+        cabezaMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
+        cabezaMesh = new THREE.Mesh(cabezaGeometria, cabezaMaterial);
+        legs.add(cabezaMesh);
+        cabezaMesh.position.y = 2.45;
+        //brazo izquierdo
+        brazoGeometria = new THREE.BoxGeometry(0.3, 1, 0.2)
+        brazoMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+        legsMesh = new THREE.Mesh(brazoGeometria, brazoMaterial);
+        legs.add(legsMesh);
+        legsMesh.position.y = 1.2;
+        legsMesh.position.x = -0.6;
+        legsMesh.rotation.z=-0.5;
+        //guante izquierdo
+        brazoGeometria = new THREE.BoxGeometry(0.3, 0.2, 0.2)
+        brazoMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+        legsMesh = new THREE.Mesh(brazoGeometria, brazoMaterial);
+        legs.add(legsMesh);
+        legsMesh.position.y = 0.67;
+        legsMesh.position.x = -0.89;
+        legsMesh.rotation.z=-0.5;
+        //busto
+        brazoGeometria = new THREE.BoxGeometry(1, 1, 0.2)
+        brazoMaterial = new THREE.MeshBasicMaterial({ color: 0x0000ff });
+        legsMesh = new THREE.Mesh(brazoGeometria, brazoMaterial);
+        legs.add(legsMesh);
+        legsMesh.position.y = 1.2;
+        //cuello camiseta
+        brazoGeometria = new THREE.BoxGeometry(0.6, 0.2, 0.2)
+        brazoMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+        legsMesh = new THREE.Mesh(brazoGeometria, brazoMaterial);
+        legs.add(legsMesh);
+        legsMesh.position.y = 1.6;
+        //punto izquierda
+        brazoGeometria = new THREE.SphereGeometry(0.13, 0.1, 0.2)
+        brazoMaterial = new THREE.MeshBasicMaterial({ color: 0xf2db01 });
+        legsMesh = new THREE.Mesh(brazoGeometria, brazoMaterial);
+        legs.add(legsMesh);
+        legsMesh.position.y = 1.4;
+        legsMesh.position.x = -0.35;
+        //punto derecha
+        brazoGeometria = new THREE.SphereGeometry(0.13, 0.1, 0.2)
+        brazoMaterial = new THREE.MeshBasicMaterial({ color: 0xf2db01 });
+        legsMesh = new THREE.Mesh(brazoGeometria, brazoMaterial);
+        legs.add(legsMesh);
+        legsMesh.position.y = 1.4;
+        legsMesh.position.x = 0.35;
+        //pierna derecha
+        brazoGeometria = new THREE.BoxGeometry(0.45,1, 0.15)
+        brazoMaterial = new THREE.MeshBasicMaterial({ color: 0x0000ff });
+        legsMesh = new THREE.Mesh(brazoGeometria, brazoMaterial);
+        legsMesh.position.y = 0.29;
+        legsMesh.position.x = 0.45;
+        legsMesh.rotation.z=0.35;
+        legs.add(legsMesh);
+        //zapato derecho
+        brazoGeometria = new THREE.BoxGeometry(0.45, 0.25, 0.15)
+        brazoMaterial = new THREE.MeshBasicMaterial({ color: 0x804000 });
+        shoesMesh = new THREE.Mesh(brazoGeometria, brazoMaterial);
+        shoesMesh.position.y = -0.34;
+        shoesMesh.position.x = 0.69;
+        shoesMesh.rotation.z=0.35;
+        legs.add(shoesMesh);  
+        //pierna izquierda
+        brazoGeometria = new THREE.BoxGeometry(0.45, 1, 0.15)
+        brazoMaterial = new THREE.MeshBasicMaterial({ color: 0x0000ff });
+        legsMesh = new THREE.Mesh(brazoGeometria, brazoMaterial);
+        legsMesh.position.y = 0.29;
+        legsMesh.position.x = -0.45;
+        legsMesh.rotation.z=-0.35;
+        legs.add(legsMesh);
+        //zapato izquierdo
+        brazoGeometria = new THREE.BoxGeometry(0.45, 0.25, 0.15)
+        brazoMaterial = new THREE.MeshBasicMaterial({ color: 0x804000 });
+        shoesMesh = new THREE.Mesh(brazoGeometria, brazoMaterial);
+        shoesMesh.position.y = -0.32;
+        shoesMesh.position.x = -0.67;
+        shoesMesh.rotation.z=-0.35;
+        legs.add(shoesMesh);
+        //brazo derecho
+        brazoGeometria = new THREE.BoxGeometry(0.3, 1, 0.2)
+        brazoMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+        legsMesh = new THREE.Mesh(brazoGeometria, brazoMaterial);
+        legs.add(legsMesh);
+        legsMesh.position.y = 2.2;
+        legsMesh.position.x = 0.66;
+        //guante derecho
+        brazoGeometria = new THREE.BoxGeometry(0.30, 0.2, 0.2)
+        brazoMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+        legsMesh = new THREE.Mesh(brazoGeometria, brazoMaterial);
+        legs.add(legsMesh);
+        legsMesh.position.y =2.81;
+        legsMesh.position.x =0.66;
+        return legs;
+    }
+    var rotation=mario.rotation.z;
+    function animate() {
+        controls.update();
+        stats.update();
+        //console.log(value);
+        requestAnimationFrame(animate);
+        if(0.7>rotation){
+            //rotation=rotation+0.01;
+            //mario.translateY(0.01);
+        }
+        //mario.rotation.z-=0.01;
+        renderer.render(scene, camera);
+    }
+</script>
+
+</body>
+</html>
